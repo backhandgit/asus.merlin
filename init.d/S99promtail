@@ -1,0 +1,11 @@
+#!/bin/sh
+
+ENABLED="yes"
+PROCS="promtail-linux-arm64"
+DESC=$PROCS
+WORK_DIR="/opt/metrics"
+PREARGS=""
+ARGS="--config.file=${WORK_DIR}/promtail.yaml"
+PATH="${PATH}:${WORK_DIR}"
+. /opt/etc/init.d/rc.func.log
+

@@ -1,0 +1,56 @@
+global:
+  scrape_interval:     30s
+
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+    relabel_configs:
+    - source_labels: [__address__]
+      regex: "([^:]+):\\d+"
+      target_label: instance
+    metric_relabel_configs:
+    - source_labels: [__name__]
+      regex: go_memstats_.*|process_cpu_seconds_total|process_start_time_seconds|prometheus_build_info|prometheus_.*_clean_start|prometheus_remote_storage_.*|prometheus_target_interval_length_seconds
+      action: keep
+
+  - job_name: 'nodexxx'
+    static_configs:
+#    - targets: ['192.168.1.1:9100']
+    relabel_configs:
+    - source_labels: [__address__]
+      regex: "([^:]+):\\d+"
+      target_label: instance
+    metric_relabel_configs:
+    - source_labels: [__name__]
+      regex: node_wifi_station_(receive|signal|transmit)_.*_total
+      action: keep
+    - source_labels: [mac_address]
+      regex: ".+([[:xdigit:]]):([[:xdigit:]][[:xdigit:]]):([[:xdigit:]][[:xdigit:]])" 
+      target_label: mac_address
+      replacement: "$1$2$3"
+
+  - job_name: 'node'
+    static_configs:
+    - targets: ['localhost:9100']
+#    - targets: ['192.168.1.127:9100']
+    relabel_configs:
+    - source_labels: [__address__]
+      regex: "([^:]+):\\d+"
+      target_label: instance
+    metric_relabel_configs:
+    - source_labels: [__name__]
+      regex: .*_build_info|node_boot_time_seconds|node_cpu_seconds_total|node_directory_size_.*|node_disk_.*_bytes_total|node_filesystem_.*_bytes|node_load.*|node_memory_MemAvailable_bytes|node_memory_MemTotal_bytes|node_network_.*_bytes_total|node_scrape_collector_duration_seconds|node_wifi_station_(receive|signal|transmit)_.*|node_uname_info
+      action: keep
+    - source_labels: [mac]
+      regex: ".+([[:xdigit:]]):([[:xdigit:]][[:xdigit:]]):([[:xdigit:]][[:xdigit:]])" 
+      target_label: mac
+      replacement: "$1$2$3"
+
+remote_write:
+- url: https://prometheus-blocks-prod-us-central1.grafana.net/api/prom/push
+  basic_auth:
+    username: 67951
+    password: eyJrIjoiNGFiYjBhZGFkZjc2NjIzZjI5Y2NlYTMyYzQ4Y2YxOTU2ZjkzOGU4YyIsIm4iOiJwcm9tZXRoZXVzIiwiaWQiOjQ3NjU2MH0=
+

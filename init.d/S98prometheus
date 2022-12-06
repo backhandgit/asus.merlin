@@ -1,0 +1,11 @@
+#!/bin/sh
+
+ENABLED="yes"
+PROCS="prometheus"
+DESC=$PROCS
+WORK_DIR="/opt/metrics/${PROCS}"
+PREARGS=""
+ARGS="--enable-feature=agent --config.file=${WORK_DIR}/prometheus.yml"
+PATH="${PATH}:${WORK_DIR}"
+. /opt/etc/init.d/rc.func.log
+
