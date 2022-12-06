@@ -4,7 +4,7 @@ ENABLED="yes"
 PROCS="promtail-linux-arm64"
 DESC=$PROCS
 WORK_DIR="/opt/metrics"
-PREARGS=""
+PREARGS="nice"
 ARGS="--config.file=${WORK_DIR}/promtail.yaml"
 PATH="${PATH}:${WORK_DIR}"
 . /opt/etc/init.d/rc.func.log
