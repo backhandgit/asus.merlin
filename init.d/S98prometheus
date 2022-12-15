@@ -1,11 +1,14 @@
 #!/bin/sh
 
+AGENT_DIR=/tmp/prometheus.agent
+[ -d "$AGENT_DIR" ] || mkdir -m 0755 -p "$AGENT_DIR"
+
 ENABLED="yes"
 PROCS="prometheus"
 DESC=$PROCS
 WORK_DIR="/opt/metrics/${PROCS}"
-PREARGS=""
-ARGS="--enable-feature=agent --config.file=${WORK_DIR}/prometheus.yml"
+PREARGS="nice"
+ARGS="--enable-feature=agent --storage.agent.path=$AGENT_DIR --config.file=${WORK_DIR}/prometheus.yml"
 PATH="${PATH}:${WORK_DIR}"
 . /opt/etc/init.d/rc.func.log
 
