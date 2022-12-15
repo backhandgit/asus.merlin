@@ -1,0 +1,79 @@
+server:
+  log_level: info
+
+metrics:
+  global:
+    scrape_interval: 30s
+    remote_write:
+    - url: https://prometheus-blocks-prod-us-central1.grafana.net/api/prom/push
+      basic_auth:
+        username: 67951
+        password: eyJrIjoiNGFiYjBhZGFkZjc2NjIzZjI5Y2NlYTMyYzQ4Y2YxOTU2ZjkzOGU4YyIsIm4iOiJwcm9tZXRoZXVzIiwiaWQiOjQ3NjU2MH0=
+
+integrations:
+  agent:
+    enabled: true
+    relabel_configs:
+    - source_labels: [agent_hostname]
+      target_label: instance
+  node_exporter:
+    enabled: false
+    relabel_configs:
+    - source_labels: [agent_hostname]
+      target_label: instance
+
+logs:
+  positions_directory: /var
+  configs:
+  - name: log_config
+    clients:
+    - url: https://32954:eyJrIjoiOTYxNDEwMzVlMjJlOTc4YjcwMzgyMTkzMjY4ODRiNzA1ZjJlY2E3NyIsIm4iOiJwcm9tdGFpbCIsImlkIjo0NzY1NjB9@logs-prod-us-central1.grafana.net/api/prom/push
+    scrape_configs:
+    - job_name: agh
+      static_configs:
+      - labels:
+          __path__: "/opt/etc/AdGuardHome/data/querylog.json"
+          log: "agh.testing12"
+
+      pipeline_stages:
+      - json:
+          expressions:
+            T:
+            Elapsed:
+            QH:
+            QT:
+            QC:
+            CP:
+            Upstream:
+            Result:
+      - json:
+          expressions:
+            IsFiltered:
+            Reason:
+            Rules:
+          source: Result
+# Rules is not an array --> rule0=91
+#     - template:
+#         source: rule0
+#         template: '{{ index .Rules 0 }}'
+      - regex:
+          expression: "\\[(?P<rule0>.+)]"
+          source: Rules
+      - json:
+          expressions:
+            FilterListID:
+          source: rule0
+      - template:
+          source: QH
+          template: '{{ Sha2Hash .QH "adGuardSalt" }}' 
+      - labeldrop:       
+          - filename     
+      - timestamp:
+          source: T
+          format: RFC3339Nano
+      - template:
+          source: log_rewritten
+          template: '{ "Elapsed": "{{ .Elapsed }}", "QH": "{{ .QH }}", "QT": "{{ .QT }}", "Upstream": "{{ if .Upstream }}{{.Upstream}}{{end}}", "FilterListID": "{{ if .FilterListID }}{{.FilterListID}}{{end}}" }'
+      - output:
+          source: log_rewritten
+
