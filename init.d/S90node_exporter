@@ -5,7 +5,7 @@ PROCS="node_exporter"
 DESC=$PROCS
 WORK_DIR="/opt/metrics/${PROCS}"
 PREARGS="nice"
-ARGS="--collector.wifi --no-collector.netdev.netlink"
+ARGS="--no-collector.netdev.netlink --no-collector.netclass"
 PATH="${PATH}:${WORK_DIR}"
 . /opt/etc/init.d/rc.func.log
 
