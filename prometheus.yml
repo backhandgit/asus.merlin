@@ -8,26 +8,20 @@ scrape_configs:
     static_configs:
     - targets: ['localhost:9090']
     relabel_configs:
-    - source_labels: [__address__]
-      regex: "([^:]+):\\d+"
+    - replacement: 'crater'
       target_label: instance
 
   - job_name: 'node'
     static_configs:
-    - targets: ['crater:9100']
+    - targets: ['localhost:9100']
     relabel_configs:
-    - source_labels: [__address__]
-      regex: "([^:]+):\\d+"
+    - replacement: 'crater'
       target_label: instance
-    metric_relabel_configs:
-    - source_labels: [mac]
-      regex: ".+([[:xdigit:]]):([[:xdigit:]][[:xdigit:]]):([[:xdigit:]][[:xdigit:]])" 
-      target_label: mac
-      replacement: "$1$2$3"
 
 remote_write:
 - url: https://prometheus-blocks-prod-us-central1.grafana.net/api/prom/push
   basic_auth:
     username: 67951
     password: eyJrIjoiNGFiYjBhZGFkZjc2NjIzZjI5Y2NlYTMyYzQ4Y2YxOTU2ZjkzOGU4YyIsIm4iOiJwcm9tZXRoZXVzIiwiaWQiOjQ3NjU2MH0=
+  remote_timeout: 2s
 
