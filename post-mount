@@ -4,7 +4,7 @@ swapon /tmp/mnt/san2/myswap.swp # Added by amtm
 
 coredns_dir=/tmp/mnt/san2/coredns
 cd $coredns_dir
-./coredns > /tmp/corends.log 2>&1 &
+./coredns > /tmp/coredns.log 2>&1 &
 
 
 metrics_dir=/tmp/mnt/san2/entware/metrics
