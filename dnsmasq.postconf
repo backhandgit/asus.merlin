@@ -1,6 +1,8 @@
 #!/bin/sh
 CONFIG=$1
 
-echo "min-cache-tll=1500" >> $1
+echo "min-cache-ttl=1500" >> $1
 sed -i 's/,86400s/,259200s/' $1
+
+echo "server=127.0.0.1#53000" > /tmp/resolv.dnsmasq
 
