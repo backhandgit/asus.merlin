@@ -1,11 +1,10 @@
 #!/bin/sh
 swapon /tmp/mnt/san2/myswap.swp # Added by amtm
 
-
+killall -9 coredns.slim
 coredns_dir=/tmp/mnt/san2/coredns
 cd $coredns_dir
-./coredns > /tmp/coredns.log 2>&1 &
-
+./coredns.slim -conf Corefile.one > /tmp/coredns.log 2>&1 &
 
 metrics_dir=/tmp/mnt/san2/entware/metrics
 
