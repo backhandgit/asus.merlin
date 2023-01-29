@@ -1,13 +1,13 @@
 #!/bin/sh
 CONFIG=$1
 
-killall -9 coredns.slim
-coredns_dir=/tmp/mnt/san2/coredns
-cd $coredns_dir
-./coredns.slim -conf Corefile.one > /tmp/coredns.log 2>&1 &
+sed -i 's/,86400s/,259200s/' $1
+sed -i '/servers-file/d' $1
+
+# adguard public dns
+#echo "server=94.140.15.15" >> $1
+# controld
+echo "server=76.76.2.32" >> $1
 
 echo "min-cache-ttl=1500" >> $1
-sed -i 's/,86400s/,259200s/' $1
-
-echo "server=127.0.0.1#53000" > /tmp/resolv.dnsmasq
 
