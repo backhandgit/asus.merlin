@@ -1,0 +1,16 @@
+
+listen-ports:
+  - 53172
+
+upstream:
+# oisd
+  - https://sky.rethinkdns.com/1:IAAgAA==
+# 1hosts pro
+#  - https://sky.rethinkdns.com/1:AAIAgA==
+# lite
+#  - https://sky.rethinkdns.com/1:AAQCAA==
+
+output: /tmp/dnsproxy.rethinkdns.log
+
+bootstrap: 
+  - "1.1.1.1:53"

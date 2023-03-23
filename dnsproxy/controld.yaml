@@ -1,0 +1,12 @@
+
+listen-ports:
+  - 53076
+
+upstream:
+  - https://freedns.controld.com/x-1hosts-pro
+# - tls://x-1hosts-pro.freedns.controld.com
+
+output: /tmp/dnsproxy.controld.log
+
+bootstrap: 
+  - "1.1.1.1:53"
