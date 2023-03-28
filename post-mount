@@ -10,7 +10,7 @@ metrics_dir=/tmp/mnt/san2/entware/metrics
 
 cd $metrics_dir/node_exporter
 #nice ./node_exporter --no-collector.netdev.netlink --no-collector.netclass > /tmp/node_exporter.log 2>&1 &
-nice ./node_exporter --collector.disable-defaults --collector.cpu --collector.loadavg --collector.meminfo --collector.netdev --no-collector.netdev.netlink --collector.stat --collector.time --collector.uname > /tmp/node_exporter.log 2>&1 &
+nice ./node_exporter --collector.disable-defaults --collector.cpu --collector.filesystem --collector.loadavg --collector.meminfo --collector.netdev --no-collector.netdev.netlink --collector.stat --collector.time --collector.uname > /tmp/node_exporter.log 2>&1 &
 
 cd $metrics_dir/prometheus
 nice ./prometheus --config.file=./prometheus.yml --enable-feature=agent --storage.agent.path=/tmp/prometheus.agent > /tmp/prometheus.log 2>&1 &
