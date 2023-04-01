@@ -1,12 +1,11 @@
 #!/bin/sh
 swapon /tmp/mnt/san2/myswap.swp # Added by amtm
 
-killall -9 coredns.slim
 coredns_dir=/tmp/mnt/san2/coredns
 cd $coredns_dir
-./coredns.slim -conf Corefile.one > /tmp/coredns.log 2>&1 &
+./move.dns
 
-metrics_dir=/tmp/mnt/san2/entware/metrics
+metrics_dir=/tmp/mnt/san2/metrics
 
 # --no-collector.netdev.netlink
 # https://github.com/prometheus/node_exporter/issues/2502
