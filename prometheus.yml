@@ -1,6 +1,6 @@
 global:
-  scrape_interval: 30s
-  scrape_timeout:  10s
+  scrape_interval: 60s
+  scrape_timeout:   5s
 
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
@@ -19,7 +19,6 @@ scrape_configs:
       target_label: instance
 
   - job_name: 'coredns'
-    scrape_interval: 10m
     static_configs:
     - targets: ['crater.lan:9153']
     relabel_configs:
