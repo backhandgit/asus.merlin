@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#killall dnsproxy
+#cd /tmp/mnt/san2/dnsproxy
+#nohup ./dnsproxy --config-path=rethinkdns.yaml &
+
+killall dnsmasq
+#echo "port=5353" >> /etc/dnsmasq.conf
+sed -i '/server=/d' /etc/dnsmasq.conf
+nohup dnsmasq --port=5353 --log-async &
+
+coredns_dir=/tmp/mnt/san2/coredns
+export PATH=$PATH:$coredns_dir
+killall coredns.slim
+nohup coredns.slim -conf $coredns_dir/Corefile > /tmp/coredns.log &
+
