@@ -1,9 +1,9 @@
 #!/bin/sh
 swapon /tmp/mnt/san2/myswap.swp # Added by amtm
+. /jffs/addons/diversion/mount-entware.div # Added by amtm or Diversion
 
-coredns_dir=/tmp/mnt/san2/coredns
-cd $coredns_dir
-./move.dns
+
+/tmp/mnt/san2/coredns/move.dns
 
 metrics_dir=/tmp/mnt/san2/metrics
 
