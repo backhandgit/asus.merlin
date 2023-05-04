@@ -2,8 +2,8 @@
 
 #cru a node_exporter "*/20 * * * * /opt/etc/init.d/S90node_exporter start"
 
-cd /jffs/opt
+export PATH=$PATH:/jffs/opt
 
 # --no-collector.netdev.netlink
 # https://github.com/prometheus/node_exporter/issues/2502
-nice ./node_exporter --collector.disable-defaults --collector.cpu --collector.filesystem --collector.loadavg --collector.meminfo --collector.netdev --no-collector.netdev.netlink --collector.stat --collector.time --collector.uname > /tmp/node_exporter.log 2>&1 &
+nice node_exporter --collector.disable-defaults --collector.cpu --collector.filesystem --collector.loadavg --collector.meminfo --collector.netdev --no-collector.netdev.netlink --collector.stat --collector.time --collector.uname > /tmp/node_exporter.log 2>&1 &
