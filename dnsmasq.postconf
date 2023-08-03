@@ -1,13 +1,14 @@
 #!/bin/sh
 CONFIG=$1
 
+# update lease times
 sed -i 's/,86400s/,259200s/' $1
-sed -i '/servers-file/d' $1
+#sed -i '/servers-file/d' $1
 
-# adguard public dns
+# https://adguard-dns.io/en/public-dns.html
 #echo "server=94.140.15.15" >> $1
 # controld
-echo "server=76.76.2.32" >> $1
+echo "server=76.76.10.40" >> $1
 
 echo "min-cache-ttl=1500" >> $1
 
