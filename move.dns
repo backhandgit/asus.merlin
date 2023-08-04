@@ -12,5 +12,6 @@ nohup dnsmasq --port=5353 --log-async &
 coredns_dir=/tmp/mnt/san2/coredns
 export PATH=$PATH:$coredns_dir
 killall coredns.slim
+mv /tmp/coredns.log /tmp/coredns.log2
 nohup coredns.slim -conf $coredns_dir/Corefile > /tmp/coredns.log &
 
