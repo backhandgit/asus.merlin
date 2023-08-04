@@ -10,8 +10,10 @@ sed -i '/server=/d' /etc/dnsmasq.conf
 nohup dnsmasq --port=5353 --log-async &
 
 coredns_dir=/tmp/mnt/san2/coredns
-export PATH=$PATH:$coredns_dir
+#coredns_dir=/jffs/opt
+coredns_log=/tmp/coredns.log
+PATH=$PATH:$coredns_dir
 killall coredns.slim
-mv /tmp/coredns.log /tmp/coredns.log2
-nohup coredns.slim -conf $coredns_dir/Corefile > /tmp/coredns.log &
+mv ${coredns_log} ${coredns_log}2
+nohup coredns.slim -conf $coredns_dir/Corefile > $coredns_log &
 
