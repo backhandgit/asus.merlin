@@ -1,0 +1,65 @@
+#!/bin/sh
+
+DIR=/tmp/node_exporter
+DNSMASQ_ONE=$DIR/.dnsmasq.sed
+PROMETHEUS_METRICS=$DIR/.prometheus.awk
+DNSMASQ_PROM=$DIR/dnsmasq.prom
+mkdir -p $DIR
+
+
+cat > $DNSMASQ_ONE <<EOF
+:loop
+$!{
+  /time/h
+  n
+  H
+  /\n$/!b loop
+}
+g;p
+EOF
+
+cat > $PROMETHEUS_METRICS <<EOF
+  function metric(name, labels, value) {
+    if (labels == "")
+      print name " " value
+    else
+      print name "{" labels "} " value
+  }
+  function gauge(name, value) {
+    print "# TYPE " name " gauge"
+  }
+  function counter(name) {
+    print "# TYPE " name " counter"
+  }
+  /cache size/ {  gauge("dnsmasq_cache_size");
+                  metric("dnsmasq_cache_size", "", \$7+0) }
+  /queries forwarded/ { counter("dnsmasq_queries");
+                        metric("dnsmasq_queries", "type=\"forward\"", \$7+0);
+                        metric("dnsmasq_queries", "type=\"local_answer\"", \$11+0);
+                   counter("dnsmasq_upstream_queries");
+                   gauge("dnsmasq_upstream_latency"); }
+  /queries sent/ { server="server=\"" substr(\$6,1,length(\$6)-1) "\"";
+                   metric("dnsmasq_upstream_queries", server, \$9+0);
+                   metric("dnsmasq_upstream_latency", server, \$19+0) }
+EOF
+
+
+killall -SIGUSR1 dnsmasq
+tail -15 /tmp/syslog.log | grep dnsmasq | sed -n -e ':loop
+$!{
+  /time/h
+  n
+  H
+  /\n$/!b loop
+}
+g;p'| awk -f $PROMETHEUS_METRICS > $DNSMASQ_PROM
+
+
+
+#Aug  7 15:11:01 dnsmasq[13791]: time 72330
+#Aug  7 15:11:01 dnsmasq[13791]: cache size 1500, 739/4103 cache insertions re-used unexpired cache entries.
+#Aug  7 15:11:01 dnsmasq[13791]: queries forwarded 5562, queries answered locally 7093
+#Aug  7 15:11:01 dnsmasq[13791]: pool memory in use 0, max 0, allocated 0
+#Aug  7 15:11:01 dnsmasq[13791]: server 127.0.1.1#53: queries sent 5394, retried 0, failed 0, nxdomain replies 491, avg. latency 50ms
+#Aug  7 15:11:01 dnsmasq[13791]: server 127.0.1.2#53: queries sent 524, retried 2, failed 0, nxdomain replies 23, avg. latency 75ms
+
