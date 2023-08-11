@@ -12,7 +12,7 @@ sed -i 's/,86400s/,259200s/' $1
 # controld
 #echo "server=76.76.10.40" >> $1
 
-echo "local=/192.in-addr.arpa/" >> $1
+echo "local=/arpa/" >> $1
 
 echo "min-cache-ttl=3600" >> $1
 
