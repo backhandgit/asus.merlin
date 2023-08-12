@@ -32,7 +32,12 @@ cat > $PROMETHEUS_METRICS <<EOF
     print "# TYPE " name " counter"
   }
   /cache size/ {  gauge("dnsmasq_cache_size");
-                  metric("dnsmasq_cache_size", "", \$7+0) }
+                  metric("dnsmasq_cache_size", "", \$7+0)
+                  split(\$8, stat, "/");
+                  counter("dnsmasq_cache_free_live");
+                  metric("dnsmasq_cache_free_live", "", stat[1]);
+                  counter("dnsmasq_cache_insertions");
+                  metric("dnsmasq_cache_insertions", "", stat[2]); }
   /queries forwarded/ { counter("dnsmasq_queries");
                         metric("dnsmasq_queries", "type=\"forward\"", \$7+0);
                         metric("dnsmasq_queries", "type=\"local_answer\"", \$11+0);
