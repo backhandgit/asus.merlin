@@ -11,4 +11,4 @@ mkdir -p $DIR
 # https://github.com/prometheus/node_exporter/issues/2502
 nice node_exporter --collector.disable-defaults --collector.cpu --collector.filesystem --collector.loadavg --collector.meminfo --collector.netdev --no-collector.netdev.netlink --collector.stat --collector.textfile --collector.textfile.directory=$DIR --collector.time --collector.uname > $DIR/node_exporter.log 2>&1 &
 
-cru a dnsmasq_exporter "*/7 * * * * /jffs/opt/dnsmasq_exporter"
+cru a dnsmasq_exporter "*/5 * * * * /jffs/opt/dnsmasq_exporter"
