@@ -16,3 +16,7 @@ echo "local=/arpa/" >> $1
 
 echo "min-cache-ttl=3600" >> $1
 
+echo "dhcp-hostsfile=/etc/hosts.dhcp" >> $1
+cp -p /jffs/opt/hosts.dhcp /etc
+
+cat /jffs/addons/YazFi.d/.dnsmasq >> /etc/dnsmasq.conf # YazFi
