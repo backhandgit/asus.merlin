@@ -1,4 +1,5 @@
 #! /bin/sh
+#location: /jffs/addons/YazFi.d/userscripts.d
 
 iptables -D YazFiFORWARD -i wl0.2 -p udp --dport 123 -m comment --comment "allow ntp" -j ACCEPT
 iptables -I YazFiFORWARD -i wl0.2 -p udp --dport 123 -m comment --comment "allow ntp" -j ACCEPT
