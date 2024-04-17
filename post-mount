@@ -2,9 +2,6 @@
 swapon /tmp/mnt/san2/myswap.swp # Added by amtm
 . /jffs/addons/diversion/mount-entware.div # Added by amtm or Diversion
 
-
-#/tmp/mnt/san2/coredns/move.dns
-
 metrics_dir=/tmp/mnt/san2/metrics
 
 # --no-collector.netdev.netlink
@@ -14,3 +11,6 @@ cd $metrics_dir/node_exporter
 
 cd $metrics_dir/prometheus
 #nice ./prometheus --config.file=./prometheus.yml --enable-feature=agent --storage.agent.path=/tmp/prometheus.agent > /tmp/prometheus.log 2>&1 &
+
+
+/tmp/mnt/san2/coredns/move.dns
