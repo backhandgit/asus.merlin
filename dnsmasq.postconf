@@ -1,22 +1,20 @@
 #!/bin/sh
 CONFIG=$1
 
+cat /jffs/addons/YazFi.d/.dnsmasq >> /etc/dnsmasq.conf # YazFi
+
+
 # update lease times
 sed -i 's/,86400s/,259200s/' $1
 
-# asus/stubby config goes into servers-file
-#sed -i '/servers-file/d' $1
-
-# https://adguard-dns.io/en/public-dns.html
-#echo "server=94.140.15.15" >> $1
-# controld
-#echo "server=76.76.10.40" >> $1
-
 echo "local=/arpa/" >> $1
 
-echo "min-cache-ttl=3600" >> $1
+#echo "min-cache-ttl=3600" >> $1
 
 echo "dhcp-hostsfile=/etc/hosts.dhcp" >> $1
 cp -p /jffs/opt/hosts.dhcp /etc
 
-cat /jffs/addons/YazFi.d/.dnsmasq >> /etc/dnsmasq.conf # YazFi
+# put dnsmasq on 5353 and remove all upstream
+echo "port=5353" >> $1
+sed -i '/server=/d' $1
+sed -i '/servers-file/d' $1  # asus/wan/stubby config uses this
