@@ -50,7 +50,7 @@ EOF
 
 
 killall -SIGUSR1 dnsmasq
-tail -15 /tmp/syslog.log | grep dnsmasq | sed -n -e ':loop
+tail -25 /tmp/syslog.log | grep dnsmasq | sed -n -e ':loop
 $!{
   /time/h
   n
@@ -60,11 +60,16 @@ $!{
 g;p'| awk -f $PROMETHEUS_METRICS > $DNSMASQ_PROM
 
 
+echo "# TYPE dnsmasq_build_info gauge" >> $DNSMASQ_PROM
+dnsmasq -vv | sed -n '1s/Dnsmasq version \([^ ]*\).*/dnsmasq_build_info{version="\1"} 1/p' >> $DNSMASQ_PROM
 
-#Aug  7 15:11:01 dnsmasq[13791]: time 72330
-#Aug  7 15:11:01 dnsmasq[13791]: cache size 1500, 739/4103 cache insertions re-used unexpired cache entries.
-#Aug  7 15:11:01 dnsmasq[13791]: queries forwarded 5562, queries answered locally 7093
-#Aug  7 15:11:01 dnsmasq[13791]: pool memory in use 0, max 0, allocated 0
-#Aug  7 15:11:01 dnsmasq[13791]: server 127.0.1.1#53: queries sent 5394, retried 0, failed 0, nxdomain replies 491, avg. latency 50ms
-#Aug  7 15:11:01 dnsmasq[13791]: server 127.0.1.2#53: queries sent 524, retried 2, failed 0, nxdomain replies 23, avg. latency 75ms
-
+#Aug 13 19:00:00 dnsmasq[12191]: time 126796
+#Aug 13 19:00:00 dnsmasq[12191]: cache size 1500, 0/61774 cache insertions re-used unexpired cache entries.
+#Aug 13 19:00:00 dnsmasq[12191]: queries forwarded 29880, queries answered locally 38807
+#Aug 13 19:00:00 dnsmasq[12191]: DNSSEC per-query subqueries HWM 0
+#Aug 13 19:00:00 dnsmasq[12191]: DNSSEC per-query crypto work HWM 0
+#Aug 13 19:00:00 dnsmasq[12191]: DNSSEC per-RRSet signature fails HWM 0
+#Aug 13 19:00:00 dnsmasq[12191]: pool memory in use 0, max 352, allocated 2200
+#Aug 13 19:00:00 dnsmasq[12191]: child processes for TCP requests: in use 0, highest since last SIGUSR1 0, max allowed 20.
+#Aug 13 19:00:00 dnsmasq[12191]: server 76.76.2.40#53: queries sent 20568, retried 22, failed 299, nxdomain replies 1767, avg. latency 27ms
+#Aug 13 19:00:00 dnsmasq[12191]: server 76.76.10.40#53: queries sent 14332, retried 36, failed 202, nxdomain replies 1214, avg. latency 26ms
