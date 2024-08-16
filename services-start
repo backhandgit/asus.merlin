@@ -1,8 +1,9 @@
 #!/bin/sh
 
-#cru a node_exporter "*/20 * * * * /opt/etc/init.d/S90node_exporter start"
-
 export PATH=$PATH:/jffs/opt
+
+updateBlockList
+service restart_dnsmasq
 
 DIR=/tmp/node_exporter
 mkdir -p $DIR
