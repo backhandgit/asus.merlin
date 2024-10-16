@@ -2,6 +2,8 @@
 
 export PATH=$PATH:/jffs/opt
 
+ctrld.dns run -c /jffs/opt/ctrld.toml &
+
 updateBlockList
 service restart_dnsmasq
 
@@ -17,3 +19,4 @@ cru a updateBlockList "0 3 * * Fri /jffs/opt/updateBlockList"
 
 /jffs/scripts/YazFi startup & # YazFi
 #/jffs/opt/ctrld.startup start
+
