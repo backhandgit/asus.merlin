@@ -18,14 +18,14 @@ cp -p /jffs/opt/hosts.dhcp /etc
 #sed -i '/servers-file/d' $1  # asus/wan/stubby config uses this
 
 # use ctrld instead
-sed -i '/servers-file=/d' $1
-sed -i '/cache-size=/d' $1
-echo "server=127.0.0.1#5354" >> $1
-echo "add-mac" >> $1
-echo "add-subnet=32,128" >> $1
-echo "cache-size=0" >> $1
-#sed -i '/port=/d' $1
-#echo "min-cache-ttl=3600" >> $1
+#sed -i '/servers-file=/d' $1
+#sed -i '/cache-size=/d' $1
+#echo "server=127.0.0.1#5354" >> $1
+#echo "add-mac" >> $1
+#echo "add-subnet=32,128" >> $1
+#echo "cache-size=0" >> $1
+
+echo "min-cache-ttl=3600" >> $1
 
 # use a local blocklist
 DNSMASQ_DIR=/tmp/dnsmasq.d/
