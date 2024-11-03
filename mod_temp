@@ -1,0 +1,15 @@
+#! /bin/sh
+
+# adapted from https://github.com/corgan2222/extstats/blob/master/mod_basic.sh
+#
+p1=`wl -i eth5 phy_tempsense | awk '{ print $1 * .5 + 20 }'` # 2.4GHz
+p2=`wl -i eth6 phy_tempsense | awk '{ print $1 * .5 + 20 }'` # 5.0GHz
+cpu=$(cat /sys/class/thermal/thermal_zone0/temp | awk '{print $1 / 1000}') # cpu thanks helkaluin 
+
+# write out a prom file
+#
+TEMP_PROM=/tmp/node_exporter/temp.prom
+echo "# TYPE node_hwmon_temp_celsius gauge" > $TEMP_PROM
+echo 'node_hwmon_temp_celsius{chip="radio", sensor="2.4"}' $p1 >> $TEMP_PROM
+echo 'node_hwmon_temp_celsius{chip="radio", sensor="5.0"}' $p2 >> $TEMP_PROM
+echo 'node_hwmon_temp_celsius{chip="thermal_zone0", sensor="cpu"}' $cpu >> $TEMP_PROM
