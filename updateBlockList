@@ -6,6 +6,6 @@ mkdir -p $DNSMASQ_DIR
 
 cd $DNSMASQ_DIR
 
-wget --backups=1 -O $DNSMASQ_DIR/multi.conf https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/dnsmasq/multi.txt
-#wget --backups=1 -O $DNSMASQ_DIR/pro.conf https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/dnsmasq/pro.txt
+#wget --backups=1 -O $DNSMASQ_DIR/multi.conf https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/dnsmasq/multi.txt
+wget --backups=1 -O $DNSMASQ_DIR/pro.conf https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/dnsmasq/pro.txt
 
