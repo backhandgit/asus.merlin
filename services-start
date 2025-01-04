@@ -2,11 +2,6 @@
 
 export PATH=$PATH:/jffs/opt
 
-#ctrld.dns run -c /jffs/opt/ctrld.toml &
-
-updateBlockList
-service restart_dnsmasq
-
 DIR=/tmp/node_exporter
 mkdir -p $DIR
 
@@ -16,6 +11,10 @@ nice node_exporter --collector.disable-defaults --collector.cpu --collector.file
 
 cru a dnsmasq_exporter "*/5 * * * * /jffs/opt/dnsmasq_exporter"
 cru a updateBlockList "0 3 * * Fri /jffs/opt/updateBlockList"
+cru a mod_temp "* * * * * /jffs/opt/mod_temp"
+
+#ctrld.dns run -c /jffs/opt/ctrld.toml &
+#blocky.startup
 
 /jffs/scripts/YazFi startup & # YazFi
 
