@@ -7,15 +7,14 @@ cat /jffs/addons/YazFi.d/.dnsmasq >> /etc/dnsmasq.conf # YazFi
 # update lease times
 sed -i 's/,86400s/,259200s/' $1
 
-#echo "local=/arpa/" >> $1
-
 echo "dhcp-hostsfile=/etc/hosts.dhcp" >> $1
 cp -p /jffs/opt/hosts.dhcp /etc
 
 # put dnsmasq on 5353 and remove all upstream
 #echo "port=5353" >> $1
 #sed -i '/server=/d' $1
-#sed -i '/servers-file/d' $1  # asus/wan/stubby config uses this
+#sed -i '/servers-file=/d' $1  # asus/wan/stubby config uses this
+#exit
 
 # use ctrld instead
 #sed -i '/servers-file=/d' $1
@@ -26,6 +25,21 @@ cp -p /jffs/opt/hosts.dhcp /etc
 #echo "cache-size=0" >> $1
 
 echo "min-cache-ttl=3600" >> $1
+
+# use custom resolv file (overwriting the one asus generates)
+sed -i '/servers-file=/d' $1
+sed -i '/no-resolv/d' $1
+echo "resolv-file=/tmp/resolv.dnsmasq" >> $1
+cat > /tmp/resolv.dnsmasq << EOF
+nameserver 2606:1a40::41
+nameserver 2606:1a40:1::41
+nameserver 2a07:a8c0::d8:37e7
+nameserver 2a07:a8c1::d8:37e7
+EOF
+echo "server=/arpa/2a10:50c0:c000::27bc:3219" >> $1
+
+# ignore dns-sd
+echo "local=/in-addr.arpa/" >> $1
 
 # use a local blocklist
 DNSMASQ_DIR=/tmp/dnsmasq.d/
