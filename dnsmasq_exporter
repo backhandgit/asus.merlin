@@ -1,5 +1,6 @@
 #!/bin/sh
 
+DNS_SERVER=192.168.50.1
 DIR=/tmp/node_exporter
 DNSMASQ_ONE=$DIR/.dnsmasq.sed
 PROMETHEUS_METRICS=$DIR/.prometheus.awk
@@ -62,6 +63,11 @@ g;p'| awk -f $PROMETHEUS_METRICS > $DNSMASQ_PROM
 
 echo "# TYPE dnsmasq_build_info gauge" >> $DNSMASQ_PROM
 dnsmasq -vv | sed -n '1s/Dnsmasq version \([^ ]*\).*/dnsmasq_build_info{version="\1"} 1/p' >> $DNSMASQ_PROM
+
+echo "# TYPE dnsmasq_blocking_enabled gauge" >> $DNSMASQ_PROM
+enabled=`nslookup 00fun.com $DNS_SERVER 2>&1 >/dev/null | grep -c "nslookup: can't resolve '00fun.com'"` >> $DNSMASQ_PROM
+echo "dnsmasq_blocking_enabled $enabled" >> $DNSMASQ_PROM
+
 
 #Aug 13 19:00:00 dnsmasq[12191]: time 126796
 #Aug 13 19:00:00 dnsmasq[12191]: cache size 1500, 0/61774 cache insertions re-used unexpired cache entries.
