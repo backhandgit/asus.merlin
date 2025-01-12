@@ -1,0 +1,16 @@
+#! /bin/sh
+
+# allow dns from my local dns server
+iptables -t nat -D PREROUTING -s 192.168.50.224/32 -p tcp -m tcp --dport 53 -j ACCEPT
+iptables -t nat -I PREROUTING -s 192.168.50.224/32 -p tcp -m tcp --dport 53 -j ACCEPT
+iptables -t nat -D PREROUTING -s 192.168.50.224/32 -p udp -m udp --dport 53 -j ACCEPT
+iptables -t nat -I PREROUTING -s 192.168.50.224/32 -p udp -m udp --dport 53 -j ACCEPT
+# allow dns from ipv6 source
+ip6tables -t nat -D PREROUTING -s 2601:646:8500:445:4775:c6d1:bb64:a13d/128 -p tcp -m tcp --dport 53 -j ACCEPT
+ip6tables -t nat -I PREROUTING -s 2601:646:8500:445:4775:c6d1:bb64:a13d/128 -p tcp -m tcp --dport 53 -j ACCEPT
+ip6tables -t nat -D PREROUTING -s 2601:646:8500:445:4775:c6d1:bb64:a13d/128 -p udp -m udp --dport 53 -j ACCEPT
+ip6tables -t nat -I PREROUTING -s 2601:646:8500:445:4775:c6d1:bb64:a13d/128 -p udp -m udp --dport 53 -j ACCEPT
+
+# add ipv6 dnsfilter -- not being done by asus?
+ip6tables -t nat -D DNSFILTER -j DNAT --to-destination 2601:646:8500:445:4775:c6d1:bb64:a13d
+ip6tables -t nat -A DNSFILTER -j DNAT --to-destination 2601:646:8500:445:4775:c6d1:bb64:a13d
