@@ -24,19 +24,20 @@ cp -p /jffs/opt/hosts.dhcp /etc
 #echo "add-subnet=32,128" >> $1
 #echo "cache-size=0" >> $1
 
-echo "min-cache-ttl=3600" >> $1
+# use custom resolv file, overwriting the file asus generates which uses servers-file format
+#sed -i '/servers-file=/d' $1
+#sed -i '/no-resolv/d' $1
+#echo "resolv-file=/tmp/resolv.dnsmasq" >> $1
+#cat > /tmp/resolv.dnsmasq << EOF
+#nameserver 2606:1a40::41
+#nameserver 2606:1a40:1::41
+#nameserver 2a07:a8c0::d8:37e7
+#nameserver 2a07:a8c1::d8:37e7
+#nameserver 2a10:50c0:c000::9e3f:8522
+#EOF
+#echo "server=/arpa/2a10:50c0:c000::27bc:3219" >> $1
 
-# use custom resolv file (overwriting the one asus generates)
-sed -i '/servers-file=/d' $1
-sed -i '/no-resolv/d' $1
-echo "resolv-file=/tmp/resolv.dnsmasq" >> $1
-cat > /tmp/resolv.dnsmasq << EOF
-nameserver 2606:1a40::41
-nameserver 2606:1a40:1::41
-nameserver 2a07:a8c0::d8:37e7
-nameserver 2a07:a8c1::d8:37e7
-EOF
-echo "server=/arpa/2a10:50c0:c000::27bc:3219" >> $1
+echo "min-cache-ttl=3600" >> $1
 
 # ignore dns-sd
 echo "local=/in-addr.arpa/" >> $1
