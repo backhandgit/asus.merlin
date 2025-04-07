@@ -1,0 +1,8 @@
+#!/bin/sh
+
+/jffs/scripts/YazFi runnow & # YazFi Guest Networks
+
+# allow ntp for lan isolated clients (pcontrols)
+iptables -D PControls -i br0 -p udp --dport 123 -m mac --mac-source 5C:62:8B:E8:33:7D -j ACCEPT
+iptables -I PControls -i br0 -p udp --dport 123 -m mac --mac-source 5C:62:8B:E8:33:7D -j ACCEPT
+
