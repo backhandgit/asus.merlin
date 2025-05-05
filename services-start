@@ -16,5 +16,9 @@ cru a mod_temp "* * * * * /jffs/opt/mod_temp"
 #ctrld.dns run -c /jffs/opt/ctrld.toml &
 #blocky.startup
 
-/jffs/scripts/YazFi startup & # YazFi
+/jffs/opt/updateBlockList
+
+/jffs/scripts/sbnMerlin run-config & # (sbnMerlin) Network Isolation Tool
+cru d sbnMerlin.1
+cru d sbnMerlin.2
 
