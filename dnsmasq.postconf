@@ -1,8 +1,8 @@
 #!/bin/sh
 CONFIG=$1
 
-cat /jffs/addons/YazFi.d/.dnsmasq >> /etc/dnsmasq.conf # YazFi
 
+. /usr/sbin/helper.sh
 
 # update lease times
 sed -i 's/,86400s/,259200s/' $1
@@ -25,19 +25,23 @@ cp -p /jffs/opt/hosts.dhcp /etc
 #echo "cache-size=0" >> $1
 
 # use custom resolv file, overwriting the file asus generates which uses servers-file format
-#sed -i '/servers-file=/d' $1
-#sed -i '/no-resolv/d' $1
-#echo "resolv-file=/tmp/resolv.dnsmasq" >> $1
-#cat > /tmp/resolv.dnsmasq << EOF
+sed -i '/servers-file=/d' $1
+sed -i '/no-resolv/d' $1
+echo "resolv-file=/tmp/resolv.dnsmasq" >> $1
+cat > /tmp/resolv.dnsmasq << EOF
+nameserver 1.1.1.1
+nameserver 9.9.9.9
+nameserver 76.76.2.41
+nameserver 76.76.10.41
 #nameserver 2606:1a40::41
 #nameserver 2606:1a40:1::41
 #nameserver 2a07:a8c0::d8:37e7
 #nameserver 2a07:a8c1::d8:37e7
 #nameserver 2a10:50c0:c000::9e3f:8522
-#EOF
+EOF
 #echo "server=/arpa/2a10:50c0:c000::27bc:3219" >> $1
 
-echo "min-cache-ttl=3600" >> $1
+echo "min-cache-ttl=1020" >> $1
 
 # ignore dns-sd
 echo "local=/in-addr.arpa/" >> $1
@@ -47,3 +51,12 @@ DNSMASQ_DIR=/tmp/dnsmasq.d/
 mkdir -p $DNSMASQ_DIR
 echo "conf-dir=${DNSMASQ_DIR},*.conf" >> $1
 
+pc_append "dhcp-option=br1,6,192.168.101.1,192.168.101.1" "$CONFIG" # (sbnMerlin) Network Isolation Tool
+pc_append "interface=br3" "$CONFIG" # (sbnMerlin) Network Isolation Tool
+pc_append "dhcp-range=br3,192.168.223.2,192.168.223.254,255.255.255.0,86400s" "$CONFIG" # (sbnMerlin) Network Isolation Tool
+pc_append "dhcp-option=br3,3,192.168.203.1" "$CONFIG" # (sbnMerlin) Network Isolation Tool
+pc_append "dhcp-option=br3,6,192.168.223.1,192.168.223.1" "$CONFIG" # (sbnMerlin) Network Isolation Tool
+pc_append "interface=br6" "$CONFIG" # (sbnMerlin) Network Isolation Tool
+pc_append "dhcp-range=br6,192.168.253.2,192.168.253.254,255.255.255.0,86400s" "$CONFIG" # (sbnMerlin) Network Isolation Tool
+pc_append "dhcp-option=br6,3,192.168.253.1" "$CONFIG" # (sbnMerlin) Network Isolation Tool
+pc_append "dhcp-option=br6,6,192.168.253.1,192.168.253.1" "$CONFIG" # (sbnMerlin) Network Isolation Tool
