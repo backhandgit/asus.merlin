@@ -9,4 +9,8 @@ cd $DNSMASQ_DIR
 #wget -O $DNSMASQ_DIR/multi.conf https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/dnsmasq/multi.txt
 wget -O $DNSMASQ_DIR/pro.conf https://raw.githubusercontent.com/hagezi/dns-blocklists/main/dnsmasq/pro.txt
 
+if [ ! -s pro.conf ] ; then
+  cp -p /jffs/opt/pro.conf .
+fi
+
 service restart_dnsmasq
