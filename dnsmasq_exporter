@@ -65,7 +65,8 @@ echo "# TYPE dnsmasq_build_info gauge" >> $DNSMASQ_PROM
 dnsmasq -vv | sed -n '1s/Dnsmasq version \([^ ]*\).*/dnsmasq_build_info{version="\1"} 1/p' >> $DNSMASQ_PROM
 
 echo "# TYPE dnsmasq_blocking_enabled gauge" >> $DNSMASQ_PROM
-enabled=`nslookup 00fun.com $DNS_SERVER 2>&1 >/dev/null | grep -c "nslookup: can't resolve '00fun.com'"` >> $DNSMASQ_PROM
+ADS_DOMAIN="zwaar.net"
+enabled=`nslookup $ADS_DOMAIN $DNS_SERVER 2>&1 >/dev/null | grep -c "nslookup: can't resolve '$ADS_DOMAIN'"` >> $DNSMASQ_PROM
 echo "dnsmasq_blocking_enabled $enabled" >> $DNSMASQ_PROM
 
 
