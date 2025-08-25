@@ -1,5 +1,10 @@
 #!/bin/sh
 
+/jffs/scripts/sbnMerlin run-config & # (sbnMerlin) Network Isolation Tool
+sleep 5
+cru d sbnMerlin.1
+cru d sbnMerlin.2
+
 export PATH=$PATH:/jffs/opt
 
 DIR=/tmp/node_exporter
@@ -17,8 +22,3 @@ cru a mod_temp "* * * * * /jffs/opt/mod_temp"
 #blocky.startup
 
 /jffs/opt/updateBlockList
-
-/jffs/scripts/sbnMerlin run-config & # (sbnMerlin) Network Isolation Tool
-cru d sbnMerlin.1
-cru d sbnMerlin.2
-
